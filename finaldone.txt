@@ -1,0 +1,2022 @@
+include 'emu8086.inc'
+org 100h
+.data
+choice dw ?
+item dw ?
+cost dw ?
+quan dw ?
+amtc dw ?        
+amt dw 0
+amtch dw 0
+costc dw ?
+quanc dw ?
+status dw 01
+newrs dw ?
+insertrs dw ?
+chocolate1 dw 11,11,11,11,11,11
+puff1 dw 11,11,11,11,11
+roll1 dw 11,11,11,11,11,11;last-french-fries
+bis1 dw 11,11,11,11,11
+ice1 dw 11,11,11,11,11,11;last-pop-corn
+juice1 dw 11,11,11,11,11
+tea1 dw 11,11,11,11,11
+cof1 dw 11,11,11,11,11
+milk1 dw 11,11,11,11,11
+.code
+define_pthis
+define_print_num
+define_print_num_uns
+define_scan_num
+define_clear_screen
+mov ax,@data
+mov ds,ax
+
+jmp customer
+main:
+call pthis
+db 10,13,"1.Chocolate 2.Snacks 3.Juice 4.Tea 5.Coffee 6.Milk 7.End",0
+call pthis
+db 10,13,"choice : ",0
+call scan_num
+mov bx,cx
+mov choice,bx
+cmp cx,01d
+je chocolate                                                                  
+cmp cx,02d
+je snacks
+cmp cx,03d
+je juice
+cmp cx,04d
+je tea
+cmp cx,05d
+je coffee
+cmp cx,06d
+je milk
+cmp cx,07d
+je balance    
+jne end    
+    
+    chocolate:
+    
+    call pthis
+    db 10,13,"1.Diary Milk 2.Milky Bar 3.Kit Kat 4.Munch 5.Five Star 6.Snickers 7.Back to Main Menu",0
+    call pthis
+    db 10,13,"Choice : ",0
+    call scan_num
+    mov bx,cx
+    mov item,bx
+    cmp item,01d
+    je diary
+    cmp item,02d
+    je milky
+    cmp item,03d
+    je kit
+    cmp item,04d
+    je mun
+    cmp item,05d
+    je fivestar
+    cmp item,06d
+    je snickers
+    cmp item,07d
+    je main
+    jne end
+    
+    
+     diary:
+     
+     ;mov ax,[si]
+     ;call pthis
+     ;db 10,13,"si:::",0
+     ;call print_num
+     
+     ;mov dx,[si]
+     
+     mov cost,20d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,chocolate1
+     sub [si],bx
+     mov ax,[si] 
+     cmp ax,00
+     jle empty
+     
+     mov cost,20d
+     mov ax,cost
+     
+     
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     add ax,dx
+     call pthis
+     db 10,13,"Amount:",0
+     mov amt,ax
+     call print_num
+; 
+     jmp main
+     
+     milky:
+     mov cost,10d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,chocolate1
+     add si,02
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     
+     
+     mov cost,10d
+     mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     ;
+     jmp main
+     
+     kit:
+     mov cost,10d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,chocolate1
+     add si,04
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,10d
+     
+     mov ax,cost
+    
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+;     
+     jmp main
+     
+     mun:
+     mov cost,05d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,chocolate1
+     add si,06
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,05d
+    
+     mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+ ;    
+     jmp main
+     
+     fivestar:
+     mov cost,10d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,chocolate1
+     add si,08
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,10d
+      mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+  ;   
+     jmp main
+     
+     snickers:
+     mov cost,25d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,chocolate1
+     add si,10
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+      mov cost,25d
+       mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     
+     
+    snacks:
+    call pthis
+    db 10,13,"1.Puffs 2.Rolls 3.French Fries 4.Biscuits 5.Ice Creams 6.Pop Corn 7.Back to Main Menu",0
+    call pthis
+    db 10,13,"choice : ",0
+    call scan_num
+    mov bx,cx
+    mov item,bx
+    cmp item,01d
+    je puffs
+    cmp item,02d
+    je rolls
+    cmp item,03d
+    je french
+    cmp item,04d
+    je biscuits
+    cmp item,05d
+    je ice
+    cmp item,06d
+    je popc
+    cmp item,07d
+    je main
+    jne end
+     
+    puffs:
+    call pthis
+    db 10,13,"1.Egg Puffs 2.Veg Puffs 3.Chicken Puffs 4.Mushroom Puffs 5.Paneer Puffs 6.Back to Main Menu 7.Back to Snacks Menu",0
+    call pthis
+    db 10,13,"choice : ",0
+    call scan_num
+    mov bx,cx
+    mov item,bx
+    cmp item,01d
+    je egg
+    cmp item,02d
+    je veg
+    cmp item,03d
+    je chicken
+    cmp item,04d
+    je mushroom
+    cmp item,05d
+    je paneer
+    cmp item,06d
+    je main
+    cmp item,07d
+    je snacks
+    jne end
+    
+     egg:
+     mov cost,15d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,puff1
+    
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,15d
+     mov ax,cost 
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     veg:
+     mov cost,10d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,puff1
+     add si,02
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,10d
+      mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     chicken:
+     mov cost,20d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,puff1
+     add si,04
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+       mov cost,20d
+       mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     mushroom:
+     mov cost,15d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,puff1
+     add si,06
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,15d
+      mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     paneer:
+     mov cost,20d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,puff1
+     add si,08
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,20d
+      mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     
+    rolls:
+    call pthis
+    db 10,13,"1.Egg Roll 2.Veg Roll 3.Chicken Roll 4.Mushroom Roll 5.Paneer Roll 6.Back to Main Menu 7.Back to Snacks Menu",0
+    call pthis
+    db 10,13,"choice : ",0
+    call scan_num
+    mov bx,cx
+    mov item,bx
+    cmp item,01d
+    je eggR
+    cmp item,02d
+    je vegR
+    cmp item,03d
+    je chickenR
+    cmp item,04d
+    je mushroomR
+    cmp item,05d
+    je paneerR
+    cmp item,06d
+    je main
+    cmp item,07d
+    je snacks
+    jne end
+    eggR:
+     mov cost,20d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,roll1
+     
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,20d
+      mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     vegR:
+     mov cost,15d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,roll1
+     add si,02
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,15d
+      mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     chickenR:
+     mov cost,30d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,roll1
+     add si,04
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,30d
+     mov ax,cost
+     
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     mushroomR:
+     mov cost,25d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,roll1
+     add si,06
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,25d
+     
+     mov ax,cost
+     
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     paneerR:
+     mov cost,25d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,roll1
+     add si,08
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,25d
+     mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main 
+     
+     french:
+     mov cost,50d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,roll1
+     add si,10
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,50d
+     mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main 
+     
+    biscuits:
+    call pthis
+    db 10,13,"1.Hide and Seek 2.Dark Fantasy 3.Good Day 4.Unibic 5.Marrygold 6.Back to Main Menu 7.Back to Snacks Menu",0
+    call pthis
+    db 10,13,"choice : ",0
+    call scan_num
+    mov bx,cx
+    mov item,bx
+    cmp item,01d
+    je hide
+    cmp item,02d
+    je dark
+    cmp item,03d
+    je good
+    cmp item,04d
+    je unibic
+    cmp item,05d
+    je marry
+    cmp item,06d
+    je main
+    cmp item,07d
+    je snacks
+    jne end
+    
+     hide:
+     mov cost,30d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,bis1
+     
+     sub [si],bx
+     mov ax,[si]
+     
+     cmp ax,00
+     jle empty
+     mov cost,30d
+     mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main 
+    
+    dark:
+     mov cost,30d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+         lea si,bis1
+         add si,02
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+          mov cost,30d
+          mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main 
+    good:
+     mov cost,20d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+         lea si,bis1
+         add si,04
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,20d
+         mov ax,cost
+         
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main 
+    unibic:
+     mov cost,10d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+              lea si,bis1
+         add si,06
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,10d
+         mov ax,cost
+
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main 
+    marry:
+     mov cost,25d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+              lea si,bis1
+         add si,08
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,25d
+         mov ax,cost
+         
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main 
+    
+    ice:
+    call pthis
+    db 10,13,"1.Vanilla 2.Strawberry 3.Chocolate 4.Pistah 5.Butter Scotch 6.Back to Main Menu 7.Back to Snacks Menu",0
+    call pthis
+    db 10,13,"choice : ",0
+    call scan_num
+    mov bx,cx
+    mov item,bx
+    cmp item,01d
+    je vanilla
+    cmp item,02d
+    je straw
+    cmp item,03d
+    je cho
+    cmp item,04d
+    je pistah
+    cmp item,05d
+    je scotch
+    cmp item,06d
+    je main
+    cmp item,07d
+    je snacks
+    jne end
+    
+     vanilla:
+     mov cost,45d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+         lea si,ice1
+        
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,45d
+         mov ax,cost
+
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     straw:
+     mov cost,60d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+         lea si,ice1
+         add si,02
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+        mov cost,60d
+        mov ax,cost
+
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     cho:
+     mov cost,65d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,ice1
+         add si,04
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,65d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     pistah:
+     mov cost,50d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,ice1
+         add si,06
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,50d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     scotch:
+     mov cost,70d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,ice1
+         add si,08
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,70d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     
+     popc:
+     mov cost,30d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,ice1
+         add si,10
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,30d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main 
+    
+     juice:
+     call pthis
+    db 10,13,"1.Pepsi 2.Coca Cola 3.7 up 4.Mountain Dew 5.Paneer Soda 6.Back to Main Menu",0
+    call pthis
+    db 10,13,"choice : ",0
+    call scan_num
+    mov bx,cx
+    mov item,bx
+    cmp item,01d
+    je pepsi
+    cmp item,02d
+    je coca
+    cmp item,03d
+    je up
+    cmp item,04d
+    je dew
+    cmp item,05d
+    je soda
+    cmp item,06d
+    je main
+    jne end
+    
+     pepsi:
+     mov cost,10d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,juice1
+         
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,10d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     coca:
+     mov cost,15d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,juice1
+         add si,02
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,15d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     up:
+     mov cost,12d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,juice1
+         add si,04
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+        mov cost,12d
+        mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     dew:
+     mov cost,15d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,juice1
+         add si,06
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,15d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     soda:
+     mov cost,12d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,juice1
+         add si,08
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,12d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     
+    tea:
+    call pthis
+    db 10,13,"1.Tea(Normal) 2.Black Tea 3.Green Tea 4.Lemon Tea 5.Ginger Tea 6.Back to Main Menu",0
+    call pthis
+    db 10,13,"choice : ",0
+    call scan_num
+    mov bx,cx
+    mov item,bx
+    cmp item,01d
+    je normal
+    cmp item,02d
+    je black
+    cmp item,03d
+    je green
+    cmp item,04d
+    je lemon
+    cmp item,05d
+    je ginger
+    cmp item,06d
+    je main
+    jne end
+    
+     normal:
+     mov cost,10d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,tea1
+        
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,10d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     black:
+     mov cost,9d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,tea1
+         add si,02
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty  
+         mov cost,9d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     green:
+     mov cost,20d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,tea1
+         add si,02
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,04
+         jle empty
+         mov cost,20d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     lemon:
+     mov cost,15d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,tea1
+         add si,06
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,15d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     ginger:
+     mov cost,12d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,tea1
+         add si,08
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,12d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+    
+    coffee:
+    call pthis
+    db 10,13,"1.Coffee(Normal) 2.Filter Coffe 3.Masala Coffee 4.Cold Coffee 5.Kumbakonam Degree Coffee 6.Back to Main Menu",0
+    call pthis
+    db 10,13,"choice : ",0
+    call scan_num
+    mov bx,cx
+    mov item,bx
+    cmp item,01d
+    je normal2
+    cmp item,02d
+    je filter
+    cmp item,03d
+    je masala
+    cmp item,04d
+    je cold
+    cmp item,05d
+    je degree
+    cmp item,06d
+    je main
+    jne end
+    
+     normal2:
+     mov cost,15d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx    
+     lea si,cof1
+       
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,15d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     filter:
+     mov cost,20d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx   
+     lea si,cof1
+         add si,02
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+          jle empty
+          mov cost,20d
+          mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     masala:
+     mov cost,25d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx 
+     lea si,cof1
+         add si,04
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+          mov cost,25d
+          mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     cold:
+     mov cost,35d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx 
+     lea si,cof1
+         add si,06
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+     mov cost,35d
+     mov ax,cost
+     
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     degree:
+     mov cost,17d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,cof1
+         add si,08
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,17d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+    
+    milk:
+    call pthis
+    db 10,13,"1.Milk(Normal) 2.Chocolate Milk 3.Boost 4.Bournvita 5.Horlicks 6.Back to Main Menu",0
+    call pthis
+    db 10,13,"choice : ",0
+    call scan_num
+    mov bx,cx
+    mov item,bx
+    cmp item,01d
+    je normal3
+    cmp item,02d
+    je chocm
+    cmp item,03d
+    je boost
+    cmp item,04d
+    je bourn
+    cmp item,05d
+    je horli
+    cmp item,06d
+    je main
+    jne end
+    
+     normal3:
+     mov cost,10d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,milk1
+     
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,10d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     chocm:
+     mov cost,20d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,milk1
+         add si,02
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+          mov cost,20d
+          mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     boost:
+     mov cost,15d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx 
+     lea si,milk1
+         add si,04
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,15d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     bourn:
+     mov cost,25d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,milk1
+         add si,06
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,25d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     horli:
+     mov cost,15d
+     mov ax,cost
+     call pthis
+     db 10,13,"Cost:",0
+     call print_num
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     lea si,milk1
+         add si,08
+         sub [si],bx
+         mov ax,[si]
+         
+         cmp ax,00
+         jle empty
+         mov cost,15d
+         mov ax,cost
+     mov quan,bx
+     mul bx
+     mov dx,amt
+     call pthis
+     db 10,13,"Amount:",0
+     add ax,dx
+     mov amt,ax
+     call print_num
+     
+     jmp main
+     
+        end:    
+        call pthis
+        db 10,13,"Invalid Selection...",0
+        jmp main   
+        
+     customer:
+     call pthis
+     db 10,13,"Enter the amount you are inserting into the Vending Machine (Min 10,Max 5000) : ",0
+     call scan_num
+     mov amtc,cx
+     cmp cx,10
+     jl mini
+     cmp cx,5000
+     jg maxi
+     mov amtch,0d
+     mov bp,00
+     deno:
+     call pthis
+     db 10,13,"Enter the denominations you are inserting:",0
+     
+     inc bp
+     cmp bp,01
+     jne nexxt
+     call pthis
+     db 10,13,"1->Rs 1 || 2->Rs 2 || 5->Rs 5 || 10->Rs 10 || 20->Rs 20 || 50->Rs 50 || 100->Rs 100 || 200->Rs 200 || 500->Rs 500 || 2000->Rs 2000 || 0->End",0
+     nexxt: 
+     call pthis
+     db 10,13,"Choice:",0
+     call scan_num
+     ;mov deno,cx
+     cmp cx,01d
+     je one
+     cmp cx,02d
+     je two
+     cmp cx,05d
+     je five
+     cmp cx,10d
+     je ten
+     cmp cx,20d
+     je twenty
+     cmp cx,50d
+     je fifty
+     cmp cx,100d
+     je hundered
+     cmp cx,200
+     je twohun
+     cmp cx,500
+     je fivehun
+     cmp cx,2000
+     je twothou
+     cmp cx,00d
+     je final
+     jne end
+     
+     one:
+     mov costc,1d
+     mov ax,costc
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     mul bx
+     mov dx,amtch
+     add ax,dx
+     call pthis
+     db 10,13,"Amount inserted:",0
+     mov amtch,ax
+     call print_num 
+     jmp deno
+     
+     two:
+     mov costc,2d
+     mov ax,costc
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     mul bx
+     mov dx,amtch
+     add ax,dx
+     call pthis
+     db 10,13,"Amount inserted:",0
+     mov amtch,ax
+     call print_num 
+     jmp deno
+     
+     five:
+     mov costc,5d
+     mov ax,costc
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     mul bx
+     mov dx,amtch
+     add ax,dx
+     call pthis
+     db 10,13,"Amount inserted:",0
+     mov amtch,ax
+     call print_num 
+     jmp deno
+     
+     ten:
+     mov costc,10d
+     mov ax,costc
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     mul bx
+     mov dx,amtch
+     add ax,dx
+     call pthis
+     db 10,13,"Amount inserted:",0
+     mov amtch,ax
+     call print_num 
+     jmp deno
+     
+     twenty:
+     mov costc,20d
+     mov ax,costc
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     mul bx
+     mov dx,amtch
+     add ax,dx
+     call pthis
+     db 10,13,"Amount inserted:",0
+     mov amtch,ax
+     call print_num 
+     jmp deno
+     
+     fifty:
+     mov costc,50d
+     mov ax,costc
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     mul bx
+     mov dx,amtch
+     add ax,dx
+     call pthis
+     db 10,13,"Amount inserted:",0
+     mov amtch,ax
+     call print_num 
+     jmp deno
+     
+     hundered:
+     mov costc,100d
+     mov ax,costc
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     mul bx
+     mov dx,amtch
+     add ax,dx
+     call pthis
+     db 10,13,"Amount inserted:",0
+     mov amtch,ax
+     call print_num 
+     jmp deno
+     
+     twohun:
+     mov costc,200d
+     mov ax,costc
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     mul bx
+     mov dx,amtch
+     add ax,dx
+     call pthis
+     db 10,13,"Amount inserted:",0
+     mov amtch,ax
+     call print_num 
+     jmp deno
+     
+     fivehun:
+     mov costc,500d
+     mov ax,costc
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     mul bx
+     mov dx,amtch
+     add ax,dx
+     call pthis
+     db 10,13,"Amount inserted:",0
+     mov amtch,ax
+     call print_num 
+     jmp deno
+     
+     twothou:
+     mov costc,2000d
+     mov ax,costc
+     call pthis
+     db 10,13,"quan:",0
+     call scan_num
+     mov bx,cx
+     mul bx
+     mov dx,amtch
+     add ax,dx
+     call pthis
+     db 10,13,"Amount inserted:",0
+     mov amtch,ax
+     call print_num 
+     jmp deno
+     
+     final:
+     mov ax,amtch
+     mov bx,amtc
+     cmp ax,bx
+     je done
+     call pthis
+     db 10,13,"Amount inserted and denominations entered does not match...Try again...",0
+     jmp customer
+     
+    done:
+    call pthis
+    db 10,13,"Amount inserted sucessfully...",0
+    mov dx,amtc
+    mov newrs,dx
+    cmp status,00
+    je finalcheck
+    jmp main
+    
+    balance:
+    mov ax,amtc
+    mov bx,amt
+    cmp ax,bx
+    jl notenough
+    sub ax,bx
+    call pthis
+    db 10,13,"Balance Amount is : ",0
+    call print_num
+    jmp over
+    
+    notenough:
+    sub bx,ax
+    mov ax,bx
+    mov insertrs,ax
+    call pthis
+    db 10,13,"Inserted amount not enough...Insert an additional Rs: ",0
+    call print_num
+    mov status,00
+    jmp customer
+    
+    finalcheck:
+    mov ax,newrs
+    mov bx,insertrs
+    cmp ax,bx
+    je over
+    jge balance2
+    
+    mov ax,insertrs
+    mov bx,newrs
+    sub ax,bx
+    call pthis
+    db 10,13,"Inserted amount not enough...Insert an additional Rs: ",0
+    call print_num
+    mov insertrs,ax
+    jmp customer
+    over:
+    call pthis
+    db 10,13,"Amount Settled...Collect your items from the below box...",0
+    hlt
+    
+    balance2:
+    mov ax,newrs
+    mov bx,insertrs
+    sub ax,bx
+    call pthis
+    db 10,13,"Balance amount is : ",0
+    call print_num
+    jmp over
+    
+    empty:
+    call pthis
+    db 10,13,"Sorry,the stock is currently unavailable...",0
+    jmp main
+    
+    mini:
+    call pthis
+    db 10,13,"You have entered a minimum amount",0
+    jmp customer
+    
+    
+    maxi:
+    call pthis
+    db 10,13,"You have entered a maximum amount",0
+    jmp customer
+    
